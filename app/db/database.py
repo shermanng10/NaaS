@@ -1,9 +1,38 @@
 import psycopg2
+import flask
+
+from .. import app
 
 
-def connect_to_db():
-    connectionString = 'dbname=naas user=postgres host=localhost'
+def request_has_connection():
+    return hasattr(flask.g, 'dbconn')
+
+
+def get_connection():
     try:
-        return psycopg2.connect(connectionString)
-    except:
-        print('Couldn\'t connect to the database.')
+        if not request_has_connection():
+            flask.g.dbconn = psycopg2.connect(app.config.get('DB_STRING'))
+        return flask.g.dbconn
+    except Exception as e:
+        app.logger.error(e)
+
+
+def init_db():
+    db = get_connection()
+    with app.open_resource('db/schema.sql', mode='r') as f:
+        db.cursor().execute(f.read())
+    db.commit()
+
+
+@app.teardown_appcontext
+def close_db_connection(error):
+    if request_has_connection():
+        conn = get_connection()
+        conn.commit()
+        conn.close()
+
+
+@app.cli.command()
+def initdb():
+    init_db()
+    print('Initialized the database.')
