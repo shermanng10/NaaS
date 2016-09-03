@@ -1,5 +1,5 @@
 from flask import jsonify, abort, request
-from app import app
+from .. import app
 
 from .models import Compliment
 

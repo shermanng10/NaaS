@@ -18,17 +18,16 @@ def get_connection():
 
 
 def init_db():
-    db = get_connection()
+    conn = get_connection()
     with app.open_resource('db/schema.sql', mode='r') as f:
-        db.cursor().execute(f.read())
-    db.commit()
+        conn.cursor().execute(f.read())
+    conn.commit()
 
 
 @app.teardown_appcontext
 def close_db_connection(error):
     if request_has_connection():
         conn = get_connection()
-        conn.commit()
         conn.close()
 
 

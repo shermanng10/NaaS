@@ -5,9 +5,9 @@ from .. import app
 
 class Compliment(object):
 
-    def __init__(self, text):
+    def __init__(self, text, published=False):
         self.text = text
-        self.published = False
+        self.published = published
 
     @classmethod
     def _execute_query(cls, *query):
@@ -15,6 +15,7 @@ class Compliment(object):
             conn = get_connection()
             cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
             cur.execute(*query)
+            conn.commit()
             return cur
         except Exception as e:
             if e.pgcode == '23505':
