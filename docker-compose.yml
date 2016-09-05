@@ -1,0 +1,21 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.5
+    volumes:
+      - /var/lib/postgresql/data
+      - ./NaaS/db/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=dev
+      - POSTGRES_DB=dev
+      - PGDATA=/var/lib/postgresql/data   
+  api:
+    build: .
+    command: python ./run.py
+    links:
+      - db:db
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db

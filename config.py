@@ -1,7 +1,7 @@
 class Config(object):
     DEBUG = False
     TESTING = False
-    DB_STRING = 'dbname=naas user=postgres host=localhost'
+    DB_STRING = 'dbname=dev user=dev password=dev host=db'
 
 
 class DevelopmentConfig(Config):
@@ -11,4 +11,4 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     LOGGER_HANDLER_POLICY = 'never'
-    DB_STRING = 'dbname=testdb user=postgres host=localhost'
+    DB_STRING = 'dbname=testdb user=dev password=dev host=db'
