@@ -1,0 +1,17 @@
+sudo: required
+
+language: python
+
+services:
+  - docker
+
+before_install:
+- docker-compose build .
+- docker-compose up
+
+script:
+- docker exec naas_api_1 python -m unittest discover
+
+after_script:
+- docker stop $(docker ps -a -q)
+- docker rm $(docker ps -a -q)
