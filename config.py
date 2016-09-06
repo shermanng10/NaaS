@@ -11,4 +11,4 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     LOGGER_HANDLER_POLICY = 'never'
-    DB_STRING = 'dbname=testdb user=dev password=dev host=db'
+    DB_STRING = 'dbname=testdb user=test password=test_password host=db'

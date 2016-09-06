@@ -4,7 +4,7 @@ services:
     image: postgres:9.5
     volumes:
       - /var/lib/postgresql/data
-      - ./NaaS/db/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+      - ./init-test-db.sh:/docker-entrypoint-initdb.d/init-test-db.sh
     environment:
       - POSTGRES_USER=dev
       - POSTGRES_PASSWORD=dev
@@ -12,7 +12,9 @@ services:
       - PGDATA=/var/lib/postgresql/data   
   api:
     build: .
-    command: python ./run.py
+    command: flask run --host=0.0.0.0
+    environment:
+      - FLASK_APP=./NaaS/__init__.py
     links:
       - db:db
     ports:
