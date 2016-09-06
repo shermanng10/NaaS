@@ -7,7 +7,7 @@ services:
 
 before_install:
 - docker-compose build
-- docker-compose up
+- docker-compose up -d
 
 script:
 - docker exec naas_api_1 python -m unittest discover
